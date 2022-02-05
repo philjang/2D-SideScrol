@@ -61,21 +61,34 @@ class npcMold {
         this.height = inputH
         this.color = inputC // npc color
         this.speed = inputS // npc speed
+        npcMold.totalRendered++
     }
-    // method
+    // method to render for each frame
     render() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
     }
-    move() {
+    // dictates npc movement 
+        move() {
         this.xpos -= this.speed
+    }
+    // checks for overlap of objects at each frame
+    detectHit() {
+        // compare relation of pc and this npc
+        const pcRight = pc.xpos + pc.width >= this.xpos
+        const pcLeft = pc.xpos <= this.xpos + this.width
+        const pcTop = pc.ypos <= this.ypos + this.height
+        const pcBottom = pc.ypos + pc.height >= this.ypos
+        // if all 4 true, then possibility for hit
+        if(pcRight&&pcLeft&&pcTop&&pcBottom) {
+            console.log('hit detected with '+this.color) // check hitbox
+        }
     }
 }
 
-
 // enemy types
 let npc1 = new npcMold(100,'red', 10)
-let npc2 = new npcMold(150,'green', 20)
+let npc2 = new npcMold(100,'green', 20)
 
 // coin object
 const coin = {
@@ -111,18 +124,17 @@ function pcMove() {
     if(keysDown.ArrowDown) pc.ypos += speed
 }
 
-// function npc2Move
 
-function detectHit() {
-    // if true, then possibility for hit
-    const pcRight = pc.xpos + pc.width >= npc1.xpos
-    const pcLeft = pc.xpos <= npc1.xpos + npc1.width
-    const pcTop = pc.ypos <= npc1.ypos + npc1.height
-    const pcBottom = pc.ypos + pc.height >= npc1.ypos
-    if(pcRight&&pcLeft&&pcTop&&pcBottom) {
-        console.log('hit detected') // check hitbox
-    }
-}
+// function detectHit() {
+//     // if true, then possibility for hit
+//     const pcRight = pc.xpos + pc.width >= npc1.xpos
+//     const pcLeft = pc.xpos <= npc1.xpos + npc1.width
+//     const pcTop = pc.ypos <= npc1.ypos + npc1.height
+//     const pcBottom = pc.ypos + pc.height >= npc1.ypos
+//     if(pcRight&&pcLeft&&pcTop&&pcBottom) {
+//         console.log('hit detected') // check hitbox
+//     }
+// }
 
 function gameLoop () { // declaration allows global scope
     // start gameloop with clear screen
@@ -130,12 +142,15 @@ function gameLoop () { // declaration allows global scope
     // new object positions
     pc.render()
     npc1.render()
+    npc2.render()
     coin.render()
     // check for collision before move
-    detectHit() 
+    npc1.detectHit() 
+    npc2.detectHit()
     // movement for next frame
     pcMove()
     npc1.move()
+    npc2.move()
 
 }
 
@@ -144,9 +159,9 @@ function gameLoop () { // declaration allows global scope
 const npcInterval = setInterval(npcCreator, 5000)
 function npcCreator () {
     if(npc1.xpos<0) npc1 = new npcMold(100, 'red', 10)
-    // if(npc2.xpos>=0) {
-    //     npc1 = new npc(100, 'red')
-    // }
+    if(npc2.xpos<0) npc2 = new npcMold(100, 'green', 20)
+    
+    // console.log(npcMold.totalRendered) // check total npc avoided
 }
 
 
