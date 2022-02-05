@@ -53,13 +53,13 @@ const pc = {
 // npc factory
 class npc {
     static totalRendered = 0
-    constructor (inputH) {
+    constructor (inputH, inputC) {
         this.xpos = 1500 // render at edge of screen
         this.ypos = 450 - inputH // vertical position rendered
         // size of npc
         this.width = 50 
         this.height = inputH
-        this.color = 'red' // npc color
+        this.color = inputC // npc color
     }
     // method
     render() {
@@ -69,7 +69,8 @@ class npc {
 }
 
 // enemy types
-let npc1 = new npc(100)
+let npc1 = new npc(100,'red')
+let npc2 = new npc(150,'green')
 
 // coin object
 const coin = {
@@ -106,10 +107,11 @@ function pcMove() {
 }
 
 // function for npc movement
-function npcMove() {
-    npcSpeed = 10
-    npc1.xpos -= npcSpeed
+function npc1Move() {
+    npc1Speed = 10
+    npc1.xpos -= npc1Speed
 }
+// function npc2Move
 
 function detectHit() {
     // if true, then possibility for hit
@@ -133,10 +135,19 @@ function gameLoop () { // declaration allows global scope
     detectHit() 
     // movement for next frame
     pcMove()
-    npcMove()
+    npc1Move()
 
 }
 
+
+// new npc when last is off screen
+const npcInterval = setInterval(npcCreator, 5000)
+function npcCreator () {
+    if(npc1.xpos<0) npc1 = new npc(100, 'red')
+    // if(npc2.xpos>=0) {
+    //     npc1 = new npc(100, 'red')
+    // }
+}
 
 
 
