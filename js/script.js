@@ -82,6 +82,7 @@ class npcMold {
         // if all 4 true, then possibility for hit
         if(pcRight&&pcLeft&&pcTop&&pcBottom) {
             console.log('hit detected with '+this.color) // check hitbox
+            endGame()
         }
     }
 }
@@ -115,8 +116,8 @@ class coinMold {
         if(pcRight&&pcLeft&&pcTop&&pcBottom) {
             coinMold.coinsCollected++
             console.log('hit detected with '+this.color)
-            this.ypos = -100
-            console.log(coinMold.coinsCollected)
+            this.ypos = -100 // send coin off screen
+            // console.log(coinMold.coinsCollected) // check total coin count
         }
     }
 }
@@ -208,6 +209,13 @@ function coinCreator () {
     coin4 = new coinMold(1660,200)
 }
 
+// end game
+function endGame() {
+    console.log(`GAME OVER... You avoided ${npcMold.totalRendered} enemies and collected ${coinMold.coinsCollected} coins.`)
+    clearInterval(gameInterval)
+    clearInterval(npcInterval)
+    clearInterval(coinInterval)
+}
 
 
 // document.addEventListener('DOMContentLoaded', {
