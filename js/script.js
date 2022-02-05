@@ -3,6 +3,10 @@ console.log('hello')
 
 /* DOM SELECTORS and EVENT LISTENERS */
 const canvas = document.getElementById('canvas')
+const keysDown = {}
+document.addEventListener('keydown', e => keysDown[e.key] = true )
+document.addEventListener('keyup', e => keysDown[e.key] = false )
+// KeyboardEvent.key = domstring of key
 
 /* CANVAS RENDERING */
 const ctx = canvas.getContext('2d')
@@ -12,8 +16,8 @@ const ctx = canvas.getContext('2d')
 canvas.setAttribute('width', getComputedStyle(canvas)["width"])
 canvas.setAttribute('height', getComputedStyle(canvas)["height"])
 
-// gameloop
-// const gameInterval = setInterval(gameLoop, 100)
+// gameloop frequency
+const gameInterval = setInterval(gameLoop, 100)
 
 // console.log(canvas) // check canvas
 // console.log(ctx) // check context2D object
@@ -63,19 +67,39 @@ const coin = {
 // ctx.fillRect(pc.xpos, pc.ypos, pc.width, pc.height)
 // ctx.fillStyle = pc.color
 
+// // test character creation
+// pc.render()
+// npc.render()
+// coin.render()
 
+// KeyboardEvent.repeat = boolean true if the key is being held down and automatically repeating
+// KeyboardEvent.shiftKey = boolean true if shift key active when key event generated 
 
+// function for player movement
+function pcMove() {
+    const speed = 20 // set increment value to move per keydown
+    if(keysDown.ArrowLeft) pc.xpos -= speed
+    if(keysDown.ArrowRight) pc.xpos += speed
+    if(keysDown.ArrowUp) pc.ypos -= speed
+    if(keysDown.ArrowDown) pc.ypos += speed
+}
 
-// function gameLoop () { // declaration allows global scope
-//     // start gameloop with clear screen
-//     pc.render()
-//     npc.render()
-//     coin.render()
-// }
+// function for npc movement
+function npcMove() {
+    npcSpeed = 10
+    npc.xpos -= npcSpeed
+}
 
-pc.render()
-npc.render()
-coin.render()
+function gameLoop () { // declaration allows global scope
+    // start gameloop with clear screen
+    ctx.clearRect(0,0, canvas.width, canvas.height)
+    pc.render()
+    npc.render()
+    coin.render()
+    pcMove()
+    npcMove()
+}
+
 
 
 
