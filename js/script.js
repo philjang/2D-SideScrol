@@ -17,7 +17,7 @@ canvas.setAttribute('width', getComputedStyle(canvas)["width"])
 canvas.setAttribute('height', getComputedStyle(canvas)["height"])
 
 // gameloop frequency
-const gameInterval = setInterval(gameLoop, 100)
+const gameInterval = setInterval(gameLoop, 50)
 
 // console.log(canvas) // check canvas
 // console.log(ctx) // check context2D object
@@ -37,18 +37,39 @@ const pc = {
     }
 }
 
-// npc object
-const npc = {
-    xpos: 1000,
-    ypos: 400,
-    width: 50,
-    height: 100,
-    color: 'red',
-    render: () => {
-        ctx.fillStyle = npc.color
-        ctx.fillRect(npc.xpos, npc.ypos, npc.width, npc.height)
+// // npc object -- test archetype
+// const npc = {
+//     xpos: 1000,
+//     ypos: 400,
+//     width: 50,
+//     height: 100,
+//     color: 'red',
+//     render: () => {
+//         ctx.fillStyle = npc.color
+//         ctx.fillRect(npc.xpos, npc.ypos, npc.width, npc.height)
+//     }
+// }
+
+// npc factory
+class npc {
+    static totalRendered = 0
+    constructor (inputH) {
+        this.xpos = 1500 // render at edge of screen
+        this.ypos = 450 - inputH // vertical position rendered
+        // size of npc
+        this.width = 50 
+        this.height = inputH
+        this.color = 'red' // npc color
+    }
+    // method
+    render() {
+        ctx.fillStyle = this.color
+        ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
     }
 }
+
+// enemy types
+let npc1 = new npc(100)
 
 // coin object
 const coin = {
@@ -87,15 +108,16 @@ function pcMove() {
 // function for npc movement
 function npcMove() {
     npcSpeed = 10
-    npc.xpos -= npcSpeed
+    npc1.xpos -= npcSpeed
 }
 
 function detectHit() {
     // if true, then possibility for hit
-    const pcRight = pc.xpos + pc.width >= npc.xpos
-    const pcTop = pc.ypos <= npc.ypos + npc.height
-    const pcBottom = pc.ypos + pc.height >= npc.ypos
-    if(pcRight&&pcTop&&pcBottom) {
+    const pcRight = pc.xpos + pc.width >= npc1.xpos
+    const pcLeft = pc.xpos <= npc1.xpos + npc1.width
+    const pcTop = pc.ypos <= npc1.ypos + npc1.height
+    const pcBottom = pc.ypos + pc.height >= npc1.ypos
+    if(pcRight&&pcLeft&&pcTop&&pcBottom) {
         console.log('hit detected') // check hitbox
     }
 }
@@ -105,7 +127,7 @@ function gameLoop () { // declaration allows global scope
     ctx.clearRect(0,0, canvas.width, canvas.height)
     // new object positions
     pc.render()
-    npc.render()
+    npc1.render()
     coin.render()
     // check for collision before move
     detectHit() 
