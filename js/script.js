@@ -90,14 +90,29 @@ function npcMove() {
     npc.xpos -= npcSpeed
 }
 
+function detectHit() {
+    // if true, then possibility for hit
+    const pcRight = pc.xpos + pc.width >= npc.xpos
+    const pcTop = pc.ypos <= npc.ypos + npc.height
+    const pcBottom = pc.ypos + pc.height >= npc.ypos
+    if(pcRight&&pcTop&&pcBottom) {
+        console.log('hit detected') // check hitbox
+    }
+}
+
 function gameLoop () { // declaration allows global scope
     // start gameloop with clear screen
     ctx.clearRect(0,0, canvas.width, canvas.height)
+    // new object positions
     pc.render()
     npc.render()
     coin.render()
+    // check for collision before move
+    detectHit() 
+    // movement for next frame
     pcMove()
     npcMove()
+
 }
 
 
