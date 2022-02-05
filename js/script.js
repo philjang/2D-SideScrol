@@ -86,22 +86,47 @@ class npcMold {
     }
 }
 
-// enemy types
+// enemy types on screen at same time
 let npc1 = new npcMold(100,'red', 10)
 let npc2 = new npcMold(100,'green', 20)
 
-// coin object
-const coin = {
-    xpos: 1490,
-    ypos: 530,
-    width: 20,
-    height: 20,
-    color: 'yellow',
-    render: () => {
-        ctx.fillStyle = coin.color
-        ctx.fillRect(coin.xpos, coin.ypos, coin.width, coin.height)
+// coin factory -- same logic as npc, but collision = +coin
+class coinMold {
+    static coinsCollected = 0 
+    constructor (inputX, inputY) {
+        this.xpos = inputX
+        this.ypos = inputY
+        this.width = 20
+        this.height = 20
+        this.color = 'yellow'
+    }
+    render() {
+        ctx.fillStyle = this.color
+        ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
+    }
+    move() {
+        this.xpos -= 5
+    }
+    detectHit() {
+        const pcRight = pc.xpos + pc.width >= this.xpos
+        const pcLeft = pc.xpos <= this.xpos + this.width
+        const pcTop = pc.ypos <= this.ypos + this.height
+        const pcBottom = pc.ypos + pc.height >= this.ypos
+        if(pcRight&&pcLeft&&pcTop&&pcBottom) {
+            coinMold.coinsCollected++
+            console.log('hit detected with '+this.color)
+            this.ypos = -100
+            console.log(coinMold.coinsCollected)
+        }
     }
 }
+
+// coins on screen at same time
+let coin1 = new coinMold(1490,200)
+let coin2 = new coinMold(1540,160)
+let coin3 = new coinMold(1610,160)
+let coin4 = new coinMold(1660,200)
+
 
 // // make character
 // ctx.fillRect(pc.xpos, pc.ypos, pc.width, pc.height)
@@ -143,10 +168,21 @@ function gameLoop () { // declaration allows global scope
     pc.render()
     npc1.render()
     npc2.render()
-    coin.render()
+    coin1.render()
+    coin2.render()
+    coin3.render()
+    coin4.render()
+    coin1.move()
+    coin2.move()
+    coin3.move()
+    coin4.move()
     // check for collision before move
     npc1.detectHit() 
     npc2.detectHit()
+    coin1.detectHit()
+    coin2.detectHit()
+    coin3.detectHit()
+    coin4.detectHit()
     // movement for next frame
     pcMove()
     npc1.move()
@@ -160,8 +196,16 @@ const npcInterval = setInterval(npcCreator, 5000)
 function npcCreator () {
     if(npc1.xpos<0) npc1 = new npcMold(100, 'red', 10)
     if(npc2.xpos<0) npc2 = new npcMold(100, 'green', 20)
-    
     // console.log(npcMold.totalRendered) // check total npc avoided
+}
+
+// new coins every 30 secodns
+const coinInterval = setInterval(coinCreator, 30000)
+function coinCreator () {
+    coin1 = new coinMold(1490,200)
+    coin2 = new coinMold(1540,160)
+    coin3 = new coinMold(1610,160)
+    coin4 = new coinMold(1660,200)
 }
 
 
