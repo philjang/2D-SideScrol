@@ -51,26 +51,31 @@ const pc = {
 // }
 
 // npc factory
-class npc {
+class npcMold {
     static totalRendered = 0
-    constructor (inputH, inputC) {
+    constructor (inputH, inputC, inputS) {
         this.xpos = 1500 // render at edge of screen
         this.ypos = 450 - inputH // vertical position rendered
         // size of npc
         this.width = 50 
         this.height = inputH
         this.color = inputC // npc color
+        this.speed = inputS // npc speed
     }
     // method
     render() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
     }
+    move() {
+        this.xpos -= this.speed
+    }
 }
 
+
 // enemy types
-let npc1 = new npc(100,'red')
-let npc2 = new npc(150,'green')
+let npc1 = new npcMold(100,'red', 10)
+let npc2 = new npcMold(150,'green', 20)
 
 // coin object
 const coin = {
@@ -106,11 +111,6 @@ function pcMove() {
     if(keysDown.ArrowDown) pc.ypos += speed
 }
 
-// function for npc movement
-function npc1Move() {
-    npc1Speed = 10
-    npc1.xpos -= npc1Speed
-}
 // function npc2Move
 
 function detectHit() {
@@ -135,7 +135,7 @@ function gameLoop () { // declaration allows global scope
     detectHit() 
     // movement for next frame
     pcMove()
-    npc1Move()
+    npc1.move()
 
 }
 
@@ -143,7 +143,7 @@ function gameLoop () { // declaration allows global scope
 // new npc when last is off screen
 const npcInterval = setInterval(npcCreator, 5000)
 function npcCreator () {
-    if(npc1.xpos<0) npc1 = new npc(100, 'red')
+    if(npc1.xpos<0) npc1 = new npcMold(100, 'red', 10)
     // if(npc2.xpos>=0) {
     //     npc1 = new npc(100, 'red')
     // }
