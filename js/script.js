@@ -5,7 +5,9 @@ console.log('hello')
 const canvas = document.getElementById('canvas')
 const timerDiv = document.getElementById('timer')
 const coinDiv = document.getElementById('coins')
+// object to store key status
 const keysDown = {}
+// key event listeners for pc movement
 document.addEventListener('keydown', e => keysDown[e.key] = true )
 document.addEventListener('keyup', e => keysDown[e.key] = false )
 // KeyboardEvent.key = domstring of key
@@ -24,12 +26,20 @@ const gameInterval = setInterval(gameLoop, 50)
 // timer function
 let seconds = 0
 let minutes = 0
+let totalSeconds = 0
 const changeSeconds = () => {
     seconds++
+    totalSeconds++
     if (seconds === 60) {
         minutes++
         seconds = 0
     }
+      // convert num to string for padStart
+      const minuteString = minutes.toString()
+      const secondString = seconds.toString()
+      let masterTime = `${minuteString.padStart(2,'0')}:${secondString.padStart(2,'0')}`
+      // display timer in div
+      timerDiv.innerText = masterTime
 }
 const timer = setInterval(changeSeconds, 1000)
 
@@ -46,17 +56,29 @@ const pc = {
     width: 50,
     height: 50,
     color: 'blue',
+    jumpGravity: 0,
     render: () => {
         ctx.fillStyle = pc.color
         ctx.fillRect(pc.xpos, pc.ypos, pc.width, pc.height)
     },
     move: ()=> {
-        const speed = 20 // set increment value to move per keydown
+        const speed = 10 // set increment value to move per keydown
         if(keysDown.ArrowLeft) pc.xpos -= speed
         if(keysDown.ArrowRight) pc.xpos += speed
-        if(keysDown.ArrowUp) pc.ypos -= speed
-        if(keysDown.ArrowDown) pc.ypos += speed
+        // reset gravity to 0 when pc touches ground
+        if(pc.ypos === 400) pc.jumpGravity = 0
+        // function to add gravity once in air
+        if(pc.ypos<400) { // airborne parameters
+            if(keysDown.ArrowUp) {
+                pc.jumpGravity += 2
+                pc.ypos += 20+pc.jumpGravity
+            } else pc.ypos += 15
+        }
+        if(keysDown.ArrowUp) pc.ypos -= 45
+        if(pc.ypos>400) pc.ypos = 400 // prevents overshoot from gravity
+        console.log(pc.jumpGravity)
     }
+
 }
 
 // // npc object -- test archetype
@@ -190,12 +212,7 @@ const componentArr = [pc, npc1, npc2, coin1, coin2, coin3, coin4]
 function gameLoop () { // declaration allows global scope
     // start gameloop with clear screen
     ctx.clearRect(0,0, canvas.width, canvas.height)
-    // convert num to string for padStart
-    const minuteString = minutes.toString()
-    const secondString = seconds.toString()
-    let masterTime = `${minuteString.padStart(2,'0')}:${secondString.padStart(2,'0')}`
-    // display timer in div
-    timerDiv.innerText = masterTime
+    console.log(totalSeconds)
 
     // componentArr.forEach( e => e.render())
     // componentArr.forEach( (e,i) => {if(i>0) e.detectHit()})
