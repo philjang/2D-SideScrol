@@ -25,18 +25,11 @@ const gameInterval = setInterval(gameLoop, 50)
 
 // timer function
 let seconds = 0
-let minutes = 0
-let totalSeconds = 0
 const changeSeconds = () => {
     seconds++
-    totalSeconds++
-    if (seconds === 60) {
-        minutes++
-        seconds = 0
-    }
       // convert num to string for padStart
-      const minuteString = minutes.toString()
-      const secondString = seconds.toString()
+      const minuteString = (Math.floor(seconds/60)).toString()
+      const secondString = (seconds%60).toString()
       let masterTime = `${minuteString.padStart(2,'0')}:${secondString.padStart(2,'0')}`
       // display timer in div
       timerDiv.innerText = masterTime
@@ -56,7 +49,8 @@ const pc = {
     width: 50,
     height: 50,
     color: 'blue',
-    jumpGravity: 0,
+    // jumpGravity: 0,
+    jumpTime: 0,
     render: () => {
         ctx.fillStyle = pc.color
         ctx.fillRect(pc.xpos, pc.ypos, pc.width, pc.height)
@@ -65,18 +59,31 @@ const pc = {
         const speed = 10 // set increment value to move per keydown
         if(keysDown.ArrowLeft) pc.xpos -= speed
         if(keysDown.ArrowRight) pc.xpos += speed
-        // reset gravity to 0 when pc touches ground
-        if(pc.ypos === 400) pc.jumpGravity = 0
-        // function to add gravity once in air
-        if(pc.ypos<400) { // airborne parameters
-            if(keysDown.ArrowUp) {
-                pc.jumpGravity += 2
-                pc.ypos += 20+pc.jumpGravity
-            } else pc.ypos += 15
+        if(pc.ypos === 400&&keysDown.ArrowUp) {
+            pc.jumpTime = 0.01
+            pc.ypos = 400+(-100*pc.jumpTime+10*pc.jumpTime**2)
         }
-        if(keysDown.ArrowUp) pc.ypos -= 45
+        if(pc.ypos<400) {
+            pc.jumpTime += 0.7
+            pc.ypos = 400+(-100*pc.jumpTime+10*pc.jumpTime**2)
+        }
+        if(pc.ypos === 400) pc.jumpTime = 0
+
+
+
+        // // reset gravity to 0 when pc touches ground
+        // if(pc.ypos === 400) {
+        //     pc.jumpGravity = 0
+        // }
+        // // function to add gravity once in air
+        // if(pc.ypos<400) { // airborne parameters
+        //     if(keysDown.ArrowUp) {
+        //         pc.jumpGravity += 2
+        //         pc.ypos += 20+pc.jumpGravity
+        //     } else pc.ypos += 15
+        // }
+        // if(keysDown.ArrowUp) pc.ypos -= 45
         if(pc.ypos>400) pc.ypos = 400 // prevents overshoot from gravity
-        console.log(pc.jumpGravity)
     }
 
 }
@@ -212,7 +219,7 @@ const componentArr = [pc, npc1, npc2, coin1, coin2, coin3, coin4]
 function gameLoop () { // declaration allows global scope
     // start gameloop with clear screen
     ctx.clearRect(0,0, canvas.width, canvas.height)
-    console.log(totalSeconds)
+    console.log(seconds)
 
     // componentArr.forEach( e => e.render())
     // componentArr.forEach( (e,i) => {if(i>0) e.detectHit()})

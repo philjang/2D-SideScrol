@@ -25,6 +25,11 @@ h1 {
                          "gameplay gameplay gameplay"
                          "subtitle subtitle subtitle";
 }
+#timer, #coins, #options, #sub {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #timer {
     grid-area: timer;
