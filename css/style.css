@@ -6,7 +6,7 @@ h1 {
     margin-bottom: 2vh;
 }
 /* holds all content */
-.layout {
+#layout {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -17,7 +17,7 @@ h1 {
     height: 95vh;
 }
 /* holds active game elements */
-.screen {
+#screen {
     display: grid;
     grid-template-rows: 10vh 60vh 10vh;
     grid-template-columns: 30vw 30vw 30vw;
@@ -26,18 +26,18 @@ h1 {
                          "subtitle subtitle subtitle";
 }
 
-.timer {
+#timer {
     grid-area: timer;
     background-color: blue;
     color: white;
 }
 
-.coins {
+#coins {
     grid-area: coins;
     background-color: lightblue;
 }
 
-.options {
+#options {
     grid-area: options;
 
     background-color: aliceblue;
@@ -48,7 +48,7 @@ main {
     background-color: gray;
 }
 /* potentially use for text info */
-.sub {
+#sub {
     grid-area: subtitle;
     background-color: black;
     color: white;

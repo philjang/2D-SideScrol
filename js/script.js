@@ -3,6 +3,8 @@ console.log('hello')
 
 /* DOM SELECTORS and EVENT LISTENERS */
 const canvas = document.getElementById('canvas')
+const timerDiv = document.getElementById('timer')
+const coinDiv = document.getElementById('coins')
 const keysDown = {}
 document.addEventListener('keydown', e => keysDown[e.key] = true )
 document.addEventListener('keyup', e => keysDown[e.key] = false )
@@ -19,11 +21,24 @@ canvas.setAttribute('height', getComputedStyle(canvas)["height"])
 // gameloop frequency
 const gameInterval = setInterval(gameLoop, 50)
 
+// timer function
+let seconds = 0
+let minutes = 0
+const changeSeconds = () => {
+    seconds++
+    if (seconds === 60) {
+        minutes++
+        seconds = 0
+    }
+}
+const timer = setInterval(changeSeconds, 1000)
+
 // console.log(canvas) // check canvas
 // console.log(ctx) // check context2D object
 
 /* GAME FUNCTIONS */
 // resolution at x: 1510 ,y: 550
+
 // pc object
 const pc = {
     xpos: 100,
@@ -34,6 +49,13 @@ const pc = {
     render: () => {
         ctx.fillStyle = pc.color
         ctx.fillRect(pc.xpos, pc.ypos, pc.width, pc.height)
+    },
+    move: ()=> {
+        const speed = 20 // set increment value to move per keydown
+        if(keysDown.ArrowLeft) pc.xpos -= speed
+        if(keysDown.ArrowRight) pc.xpos += speed
+        if(keysDown.ArrowUp) pc.ypos -= speed
+        if(keysDown.ArrowDown) pc.ypos += speed
     }
 }
 
@@ -118,6 +140,8 @@ class coinMold {
             console.log('hit detected with '+this.color)
             this.ypos = -100 // send coin off screen
             // console.log(coinMold.coinsCollected) // check total coin count
+            // display coin count in div
+            coinDiv.innerText = `${coinMold.coinsCollected} coins`
         }
     }
 }
@@ -141,14 +165,14 @@ let coin4 = new coinMold(1660,200)
 // KeyboardEvent.repeat = boolean true if the key is being held down and automatically repeating
 // KeyboardEvent.shiftKey = boolean true if shift key active when key event generated 
 
-// function for player movement
-function pcMove() {
-    const speed = 20 // set increment value to move per keydown
-    if(keysDown.ArrowLeft) pc.xpos -= speed
-    if(keysDown.ArrowRight) pc.xpos += speed
-    if(keysDown.ArrowUp) pc.ypos -= speed
-    if(keysDown.ArrowDown) pc.ypos += speed
-}
+// // function for player movement
+// function pcMove() {
+//     const speed = 20 // set increment value to move per keydown
+//     if(keysDown.ArrowLeft) pc.xpos -= speed
+//     if(keysDown.ArrowRight) pc.xpos += speed
+//     if(keysDown.ArrowUp) pc.ypos -= speed
+//     if(keysDown.ArrowDown) pc.ypos += speed
+// }
 
 
 // function detectHit() {
@@ -161,10 +185,22 @@ function pcMove() {
 //         console.log('hit detected') // check hitbox
 //     }
 // }
+const componentArr = [pc, npc1, npc2, coin1, coin2, coin3, coin4]
 
 function gameLoop () { // declaration allows global scope
     // start gameloop with clear screen
     ctx.clearRect(0,0, canvas.width, canvas.height)
+    // convert num to string for padStart
+    const minuteString = minutes.toString()
+    const secondString = seconds.toString()
+    let masterTime = `${minuteString.padStart(2,'0')}:${secondString.padStart(2,'0')}`
+    // display timer in div
+    timerDiv.innerText = masterTime
+
+    // componentArr.forEach( e => e.render())
+    // componentArr.forEach( (e,i) => {if(i>0) e.detectHit()})
+    // componentArr.forEach( e => e.move())
+
     // new object positions
     pc.render()
     npc1.render()
@@ -173,10 +209,6 @@ function gameLoop () { // declaration allows global scope
     coin2.render()
     coin3.render()
     coin4.render()
-    coin1.move()
-    coin2.move()
-    coin3.move()
-    coin4.move()
     // check for collision before move
     npc1.detectHit() 
     npc2.detectHit()
@@ -185,9 +217,13 @@ function gameLoop () { // declaration allows global scope
     coin3.detectHit()
     coin4.detectHit()
     // movement for next frame
-    pcMove()
+    pc.move()
     npc1.move()
     npc2.move()
+    coin1.move()
+    coin2.move()
+    coin3.move()
+    coin4.move()
 
 }
 
