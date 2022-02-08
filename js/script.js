@@ -141,26 +141,40 @@ class coinMold extends gamePiece {
     }
 }
 
+// return random speed between 9 and 25
+function randomNpcS () {
+    return Math.floor(Math.random()*17+9)+seconds/5 // progressively increases average speed
+}
+// return random hexcode string
+function randomColor () {
+    return "#"+Math.floor(Math.random()*16777215).toString(16)
+}
+// random ypos generator for coins in range of 171-400
+function randomY () {
+    return Math.floor(Math.random()*230+171)
+}
+
 // function to place new pieces on canvas
 function spawn () {
-    if(seconds%5===0&&npc1.xpos<0)npc1 = new npcMold(1500, 350, 50, 100, 'red', 10)
-    if(seconds%5===0&&npc2.xpos<0)npc2 = new npcMold(1500, 350, 50, 100, 'green', 20)
+    if(seconds%5===0&&npc1.xpos<0)npc1 = new npcMold(1500, 350, 50, 100, randomColor(), randomNpcS()-5) // keeps one slower so they do not bunch together making the game too easy
+    if(seconds%5===0&&npc2.xpos<0)npc2 = new npcMold(1500, 350, 50, 100, randomColor(), randomNpcS())
     if(seconds%15===0&&coin4.xpos<0) {
-        coin1 = new coinMold(1490,200, 20, 20, 'yellow', 5)
-        coin2 = new coinMold(1540,160, 20, 20, 'yellow', 5)
-        coin3 = new coinMold(1610,160, 20, 20, 'yellow', 5)
-        coin4 = new coinMold(1660,200, 20, 20, 'yellow', 5)
+        // coins continually speed up as npc's do
+        coin1 = new coinMold(1500, randomY(), 20, 20, 'yellow', 5+seconds/15)
+        coin2 = new coinMold(1600, randomY(), 20, 20, 'yellow', 5+seconds/15)
+        coin3 = new coinMold(1700, randomY(), 20, 20, 'yellow', 5+seconds/15)
+        coin4 = new coinMold(1800, randomY(), 20, 20, 'yellow', 5+seconds/15)
     }
-    // if(seconds%10===0) {
-    //     gameInterval = setInterval(gameLoop, 50-seconds/5)
-    // }
 }
 
 // end game
 function endGame() {
+    // display results
     subDiv.innerText = `GAME OVER... You collected ${coinMold.coinsCollected} coins and survived for ${seconds} seconds.`
+    // clear gameloop and timer intervals
     clearInterval(gameInterval)
     clearInterval(timer)
+    // bring back start button
     startBtn.style.display = 'inline-block'
 }
 
