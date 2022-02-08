@@ -207,5 +207,4 @@ function gameLoop() {
     });
     // movement for next frame
     componentArr.forEach((e) => e.move());
-    console.log(pc)
 }

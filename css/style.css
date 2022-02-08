@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
-/* @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"); */
-
 body {
     background-color: powderblue;
-    font-family: "Bangers", cursive;
-    font-size: 1.5rem;
+    font-family: "press start 2p", cursive;
+    /* font-size: 1.5rem; */
 }
 h1 {
     margin-top: 2vh;
@@ -82,6 +79,6 @@ canvas {
     /* display: none; */
 }
 #start-btn {
-    font-family: "Bangers", cursive;
+    font-family: "press start 2p", cursive;
     padding: 1vh 2vh;
 }
