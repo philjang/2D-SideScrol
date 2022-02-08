@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/script.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <div id="layout">
-        <h1>2D-SideScrol</h1> <!-- Title -->
-        <div id="screen"> <!-- Gamescreen -->
-            <!-- status bar -->
-            <div id="timer">Timer</div>
-            <div id="coins">Coins</div>
-            <div id="options">
-                <button id="start-btn">Start</button>
-                <!-- <button id="reset-btn">Reset</button> -->
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/style.css" />
+        <script defer src="js/script.js"></script>
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div id="layout">
+            <!-- Title -->
+            <h1>2D-SideScrol</h1>
+            <!-- Gamescreen -->
+            <div id="screen">
+                <!-- status bar -->
+                <div id="timer">Timer</div>
+                <div id="coins">Coins</div>
+                <div id="options">
+                    <!-- <button id="reset-btn">Reset</button> -->
+                    <button id="start-btn">Start</button>
+                </div>
+                <!-- holds canvas element -->
+                <main>
+                    <canvas id="canvas"></canvas>
+                    <div id="instructions">Press "space" or click the "Start" button to begin!</div>
+                </main>
+                <!-- subtitle bar -->
+                <div id="sub">Sub</div>
             </div>
-            <main>  <!-- holds canvas element -->
-                <canvas id="canvas"></canvas>
-                <div id="instructions">Press "space" or click the "Start" button to begin!</div>
-            </main>  
-            <!-- subtitle bar -->
-            <div id="sub">Sub</div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

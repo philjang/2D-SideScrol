@@ -25,7 +25,6 @@
 //         }
 //         if(pc.ypos>400) pc.ypos = 400 // prevents overshoot from gravity
 //     }
-
 // }
 
 // // npc object -- test archetype
