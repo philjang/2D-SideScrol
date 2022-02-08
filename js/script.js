@@ -4,6 +4,7 @@ const timerDiv = document.getElementById('timer')
 const coinDiv = document.getElementById('coins')
 const subDiv = document.getElementById('sub')
 const startBtn = document.getElementById('start-btn')
+const instructions = document.getElementById('instructions')
 // object to store key status
 const keysDown = {}
 // key event listeners for pc movement
@@ -23,7 +24,7 @@ canvas.setAttribute('height', getComputedStyle(canvas)["height"])
 
 // gameloop variables
 // time since start
-let seconds = ""
+let seconds = 0
 // gameloop frequency, set in initialize()
 let gameInterval = ""
 // stopwatch interval
@@ -41,9 +42,14 @@ const changeSeconds = () => {
 }
 
 // start function
+// space key listener for start btn
+document.addEventListener('keyup', e => {
+    if(e.key === " "&& seconds === 0) initialize()
+})
 startBtn.addEventListener('click',initialize)
 function initialize() {
-    seconds = 0 // reset timer
+    instructions.style.display = "none" // removes intro banner
+    // seconds = 0 // reset timer
     coinMold.coinsCollected = 0 // reset count counter
     timerDiv.innerText = "00:00" // reset time display
     coinDiv.innerText = "" // reset coin display
@@ -117,7 +123,7 @@ class npcMold extends gamePiece {
     // checks for overlap of objects at each frame
     hitResponse() {
         if(super.detectHit()) {
-            console.log('hit detected with '+this.color) // check hitbox
+            // console.log('hit detected with '+this.color) // check hitbox
             endGame()
         }
     }
@@ -157,25 +163,33 @@ function randomY () {
 // function to place new pieces on canvas
 function spawn () {
     if(seconds%5===0&&npc1.xpos<0)npc1 = new npcMold(1500, 350, 50, 100, randomColor(), randomNpcS()-5) // keeps one slower so they do not bunch together making the game too easy
-    if(seconds%5===0&&npc2.xpos<0)npc2 = new npcMold(1500, 350, 50, 100, randomColor(), randomNpcS())
-    if(seconds%15===0&&coin4.xpos<0) {
+    if(seconds%5===0&&npc2.xpos<0)npc2 = new npcMold(1800, 350, 50, 100, randomColor(), randomNpcS())
+    if(seconds%10===0&&coin4.xpos<0) {
         // coins continually speed up as npc's do
         coin1 = new coinMold(1500, randomY(), 20, 20, 'yellow', 5+seconds/15)
         coin2 = new coinMold(1600, randomY(), 20, 20, 'yellow', 5+seconds/15)
         coin3 = new coinMold(1700, randomY(), 20, 20, 'yellow', 5+seconds/15)
         coin4 = new coinMold(1800, randomY(), 20, 20, 'yellow', 5+seconds/15)
+        // for(let i =0; i<coinArr.length; i++) {
+        //     const coinArr = [coin1, coin2, coin3, coin4]
+        //     coinArr[i] = new coinMold(1500+i*100, randomY(), 20, 20, 'yellow', 5+seconds/15)
+        //     }
     }
 }
 
 // end game
 function endGame() {
     // display results
+    instructions.style.display = "flex" // bring back banner for score display
+    instructions.innerText = `You scored ${Math.floor(seconds*.8+coinMold.coinsCollected*2.5)} points!\n\n Tap "space" or click Start to beat your last score!`
     subDiv.innerText = `GAME OVER... You collected ${coinMold.coinsCollected} coins and survived for ${seconds} seconds.`
     // clear gameloop and timer intervals
     clearInterval(gameInterval)
     clearInterval(timer)
     // bring back start button
     startBtn.style.display = 'inline-block'
+    ctx.clearRect(0,0, canvas.width, canvas.height) // removes glitchy restart
+    seconds = 0
 }
 
 function gameLoop () { // declaration allows global scope
