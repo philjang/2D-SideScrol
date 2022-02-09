@@ -9,7 +9,7 @@ h1 {
     margin-bottom: 2vh;
     padding: 1vh 3vw;
     color: white;
-    background-color: rgba(0,0,0, .5);
+    background-color: rgba(0,0,0, .7);
     border-radius: 10px;
     border: 7px double white;
 }
@@ -24,7 +24,7 @@ h1 {
     background-size: cover;
     width: 95vw;
     height: 95vh;
-    border-radius: 40px;
+    border-radius: 20px;
 }
 /* holds active game elements */
 #screen {
@@ -35,7 +35,6 @@ h1 {
         "top-left top-mid top-right"
         "gameplay gameplay gameplay" 
         "subtitle subtitle subtitle";
-    border: 2px solid black;
 }
 .top-left, .top-mid, .top-right, #sub, main, #instructions { 
     display: flex;
@@ -44,33 +43,37 @@ h1 {
 }
 .top-left {
     grid-area: top-left;
-    background-color: blue;
+    background-color: rgba(0,0,0,.4);
+    color: white;
+
 }
 #timer {
     /* grid-area: timer; */
-    color: white;
     margin-left: 1vw;
 }
 .top-mid{
     grid-area: top-mid;
-    background-color: lightblue;
+    background-color: rgba(0,0,0,.4);
+    color: white;
 }
 #coins {
     margin-left:1vw;
 }
 .top-right {
     grid-area: top-right;
-    background-color: aliceblue;
+    background-color: rgba(0,0,0,.4);
 }
 /* active game rendering area */
 main {
     grid-area: gameplay;
     background-color: gray;
+    background-image: url("../img/backdrop.png");
+    background-size: auto 100%;
 }
 /* potentially use for text info */
 #sub {
     grid-area: subtitle;
-    background-color: black;
+    background-color: rgba(0,0,0,.4);
     color: white;
 }
 canvas {
@@ -85,8 +88,9 @@ canvas {
     width: 80vw;
     height: 40vh;
     text-align: center;
-    font-size: 2em;
-    padding: 2vh 0;
+    font-size: 1.5em;
+    line-height: 1.5;
+    padding: 2vh 1vw;
     border-radius: 10px;
     border: 7px double white;
 }
@@ -94,5 +98,4 @@ canvas {
     font-family: "Bangers", cursive;
     padding: 1vh 2vh;
     letter-spacing: 2px;
-
 }

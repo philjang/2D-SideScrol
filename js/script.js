@@ -36,6 +36,33 @@ let seconds = -1;
 // // stopwatch interval
 // let timer = ""
 
+let srcXcoin="";
+// let srcYcoin="";
+// const sheetWidth = 80;
+// const sheetHeight = 16;
+let coincCols = 5;
+// const frameCount = 0;
+// const width = sheetWidth/cols;
+
+let currentFrame = 0;
+const coinSprite = new Image();
+coinSprite.src = "img/coin.png"
+
+function updateFrame (){
+    // currentFrame = ++currentFrame % coinCols;
+    // srcXcoin = currentFrame*16
+    // srcY = 0
+    // ctx.clearRect(0,0,500,500)
+}
+
+function drawImage(){
+    updateFrame()
+    ctx.drawImage(coinSprite, srcXcoin, 0, 16, 16, 40, 40, 20, 20)
+}
+
+setInterval(drawImage,50)
+
+
 // timer function
 const changeSeconds = () => {
     seconds++;
@@ -58,7 +85,7 @@ function initialize() {
     seconds = 0 // reset timer
     coinMold.coinsCollected = 0; // reset coin counter
     timerDiv.innerText = "00:00"; // reset time display
-    coinDiv.innerText = "0"; // reset coin display
+    coinDiv.innerText = "x 0"; // reset coin display
     subDiv.innerText = ""; // clear game over message
     pc = new gamePiece(100, 400, 50, 50, "blue", 10);
     pc.jumpTime = 0; // add property of jumpTime for gravity calculations
@@ -85,7 +112,7 @@ function initialize() {
     coin3 = new coinMold(1610, 160, 20, 20, "yellow", 5);
     coin4 = new coinMold(1660, 200, 20, 20, "yellow", 5);
     // begin intervals for stopwatch and gameloop
-    gameInterval = setInterval(gameLoop, 30);
+    gameInterval = setInterval(gameLoop, 50);
     timer = setInterval(changeSeconds, 1000);
     startBtn.style.display = "none"; // remove start btn from view
 }
@@ -148,8 +175,11 @@ class coinMold extends gamePiece {
             this.ypos = -100; // send coin off screen
             // console.log(coinMold.coinsCollected) // check total coin count
             // display coin count in div
-            coinDiv.innerText = coinMold.coinsCollected;
+            coinDiv.innerText = `x ${coinMold.coinsCollected}`;
         }
+    }
+    render() {
+        ctx.drawImage(coinSprite, srcXcoin, 0, 16, 16, this.xpos, this.ypos, this.width, this.height)
     }
 }
 
@@ -169,7 +199,7 @@ function randomY() {
 // function to place new pieces on canvas
 function spawn() {
     if (seconds % 5 === 0 && npc1.xpos < 0) npc1 = new npcMold(1550, 350, 50, 100, randomColor(), randomNpcS() - 5); // keeps one slower so they do not bunch together making the game too easy
-    if (seconds % 5 === 0 && npc2.xpos < 0) npc2 = new npcMold(1800, 350, 50, 100, randomColor(), randomNpcS());
+    if (seconds % 5 === 0 && npc2.xpos < 0) npc2 = new npcMold(1900, 350, 50, 100, randomColor(), randomNpcS());
     if (seconds % 10 === 0 && coin4.xpos < 0) {
         // coins continually speed up as npc's do
         coin1 = new coinMold(1500, randomY(), 20, 20, "yellow", 5 + seconds / 15);
@@ -198,8 +228,10 @@ function endGame() {
     seconds = -1;
 }
 
+// declaration allows global scope
 function gameLoop() {
-    // declaration allows global scope
+    currentFrame = ++currentFrame % 5;
+    srcXcoin = currentFrame*16
     // start gameloop with clear screen
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     spawn();
