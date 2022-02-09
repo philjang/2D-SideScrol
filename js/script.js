@@ -12,6 +12,12 @@ document.addEventListener("keydown", (e) => (keysDown[e.key] = true));
 document.addEventListener("keyup", (e) => (keysDown[e.key] = false));
 // KeyboardEvent.key = domstring of key
 
+// // experimenting with mobile interface
+// const touch = {}
+// document.addEventListener('touchstart', ()=> {touch.randomword = true});
+// document.addEventListener('touchend', ()=> {touch.randomword = false});
+// || touch.randomword) // in pc.mov()
+
 /* CANVAS RENDERING */
 const ctx = canvas.getContext("2d");
 
@@ -24,7 +30,7 @@ canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 
 // gameloop variables
 // time since start
-let seconds = 0;
+let seconds = -1;
 // // gameloop frequency, set in initialize()
 // let gameInterval = ""
 // // stopwatch interval
@@ -44,15 +50,15 @@ const changeSeconds = () => {
 // start function
 // space key listener for start btn
 document.addEventListener("keyup", (e) => {
-    if (e.key === " " && seconds === 0) initialize();
+    if (e.key === " " && seconds === -1) initialize();
 });
 startBtn.addEventListener("click", initialize);
 function initialize() {
     instructions.style.display = "none"; // removes intro banner
-    // seconds = 0 // reset timer
+    seconds = 0 // reset timer
     coinMold.coinsCollected = 0; // reset coin counter
     timerDiv.innerText = "00:00"; // reset time display
-    coinDiv.innerText = ""; // reset coin display
+    coinDiv.innerText = "0"; // reset coin display
     subDiv.innerText = ""; // clear game over message
     pc = new gamePiece(100, 400, 50, 50, "blue", 10);
     pc.jumpTime = 0; // add property of jumpTime for gravity calculations
@@ -72,14 +78,14 @@ function initialize() {
         if (pc.ypos > 400) pc.ypos = 400; // prevents overshoot from gravity
     };
     // spawn first wave
-    npc1 = new npcMold(1510, 350, 50, 100, "red", 10);
-    npc2 = new npcMold(1510, 350, 50, 100, "green", 20);
+    npc1 = new npcMold(1550, 350, 50, 100, "red", 10);
+    npc2 = new npcMold(1550, 350, 50, 100, "green", 20);
     coin1 = new coinMold(1490, 200, 20, 20, "yellow", 5);
     coin2 = new coinMold(1540, 160, 20, 20, "yellow", 5);
     coin3 = new coinMold(1610, 160, 20, 20, "yellow", 5);
     coin4 = new coinMold(1660, 200, 20, 20, "yellow", 5);
     // begin intervals for stopwatch and gameloop
-    gameInterval = setInterval(gameLoop, 50);
+    gameInterval = setInterval(gameLoop, 30);
     timer = setInterval(changeSeconds, 1000);
     startBtn.style.display = "none"; // remove start btn from view
 }
@@ -142,7 +148,7 @@ class coinMold extends gamePiece {
             this.ypos = -100; // send coin off screen
             // console.log(coinMold.coinsCollected) // check total coin count
             // display coin count in div
-            coinDiv.innerText = `${coinMold.coinsCollected} coins`;
+            coinDiv.innerText = coinMold.coinsCollected;
         }
     }
 }
@@ -162,7 +168,7 @@ function randomY() {
 
 // function to place new pieces on canvas
 function spawn() {
-    if (seconds % 5 === 0 && npc1.xpos < 0) npc1 = new npcMold(1500, 350, 50, 100, randomColor(), randomNpcS() - 5); // keeps one slower so they do not bunch together making the game too easy
+    if (seconds % 5 === 0 && npc1.xpos < 0) npc1 = new npcMold(1550, 350, 50, 100, randomColor(), randomNpcS() - 5); // keeps one slower so they do not bunch together making the game too easy
     if (seconds % 5 === 0 && npc2.xpos < 0) npc2 = new npcMold(1800, 350, 50, 100, randomColor(), randomNpcS());
     if (seconds % 10 === 0 && coin4.xpos < 0) {
         // coins continually speed up as npc's do
@@ -181,15 +187,15 @@ function spawn() {
 function endGame() {
     // display results
     instructions.style.display = "flex"; // bring back banner for score display
-    instructions.innerText = `You scored ${Math.floor(seconds * 0.8 + coinMold.coinsCollected * 2.5)} points!\n\n Tap "space" or click Start to beat your last score!`;
-    subDiv.innerText = `GAME OVER... You collected ${coinMold.coinsCollected} coins and survived for ${seconds} seconds.`;
+    instructions.innerText = `You scored ${Math.floor(seconds * 0.8 + coinMold.coinsCollected * 2.5)} points!\n\n Tap "space" or click "Start" to beat your last score!`;
+    subDiv.innerText = `GAME OVER...`;
     // clear gameloop and timer intervals
     clearInterval(gameInterval);
     clearInterval(timer);
     // bring back start button
     startBtn.style.display = "inline-block";
     ctx.clearRect(0, 0, canvas.width, canvas.height); // removes glitchy restart
-    seconds = 0;
+    seconds = -1;
 }
 
 function gameLoop() {
