@@ -99,3 +99,6 @@ canvas {
     padding: 1vh 2vh;
     letter-spacing: 2px;
 }
+.sprites {
+    display: none;
+}

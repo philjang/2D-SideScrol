@@ -225,3 +225,11 @@
 // coin2.move()
 // coin3.move()
 // coin4.move()
+
+// gameloop variables
+// time since start
+// let seconds = -1;
+// // gameloop frequency, set in initialize()
+// let gameInterval = ""
+// // stopwatch interval
+// let timer = ""
