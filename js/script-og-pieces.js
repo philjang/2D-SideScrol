@@ -233,3 +233,8 @@
 // let gameInterval = ""
 // // stopwatch interval
 // let timer = ""
+
+// // return random hexcode string
+// function randomColor() {
+//     return "#" + Math.floor(Math.random() * 16777215).toString(16);
+// }

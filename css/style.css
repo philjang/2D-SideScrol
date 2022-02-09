@@ -5,8 +5,8 @@ body {
     letter-spacing: 2px;
 }
 h1 {
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: 1.5vh;
+    margin-bottom: 1vh;
     padding: 1vh 3vw;
     color: white;
     background-color: rgba(0,0,0, .7);
@@ -24,7 +24,7 @@ h1 {
     background-size: cover;
     width: 95vw;
     height: 95vh;
-    border-radius: 20px;
+    /* border-radius: 20px; */
 }
 /* holds active game elements */
 #screen {
@@ -35,6 +35,7 @@ h1 {
         "top-left top-mid top-right"
         "gameplay gameplay gameplay" 
         "subtitle subtitle subtitle";
+    border: 7px double black;
 }
 .top-left, .top-mid, .top-right, #sub, main, #instructions { 
     display: flex;
@@ -43,7 +44,7 @@ h1 {
 }
 .top-left {
     grid-area: top-left;
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,.8);
     color: white;
 
 }
@@ -53,7 +54,7 @@ h1 {
 }
 .top-mid{
     grid-area: top-mid;
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,.8);
     color: white;
 }
 #coins {
@@ -61,7 +62,7 @@ h1 {
 }
 .top-right {
     grid-area: top-right;
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,.8);
 }
 /* active game rendering area */
 main {
@@ -73,7 +74,7 @@ main {
 /* potentially use for text info */
 #sub {
     grid-area: subtitle;
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,.8);
     color: white;
 }
 canvas {
