@@ -66,7 +66,7 @@ npc1sprite.src = "img/npc1.png";
 const npc2sprite = new Image();
 npc2sprite.src = "img/npc2.png";
 const bgImage = new Image();
-bgImage.src = "img/Untitled-1-01.png";
+bgImage.src = "img/backdropGameplay.png";
 
 
 let srcXcoin="";
@@ -104,7 +104,7 @@ function initialize() {
     timerDiv.innerText = "00:00"; // reset time display
     coinDiv.innerText = "x 0"; // reset coin display
     subDiv.innerText = ""; // clear game over message  
-    // background = new gamePiece(0,0,3020,550,.001,bgImage,3020,550) 
+    background = new backgroundClass(0,0,3020,550,5,bgImage,3020,550) 
     pc = new gamePiece(100, 400, 50, 50, 10, pcRightSprite, 100, 100);
     pc.jumpTime = 0; // add property of jumpTime for gravity calculations
     // player movement function as key-value pair
@@ -179,6 +179,14 @@ class gamePiece {
 // for (let i=0;i<2;i++) {
 //     ctx.drawImage(bgImage, i*1510,0)
 // }
+class backgroundClass extends gamePiece {
+    constructor(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH) {
+        super(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH);
+    }
+    render() {
+        ctx.drawImage(this.image, 0, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height)
+    }
+}
 
 // npc subclass
 class npcMold extends gamePiece {
@@ -229,7 +237,7 @@ function randomY() {
 
 // function to place new pieces on canvas
 function spawn() {
-    // if (background.xpos<-1510) background = new gamePiece(0,0,3020,550,.001,bgImage,3020,550) 
+    if (background.xpos<-1510) background = new backgroundClass(0,0,3020,550,5,bgImage,3020,550) 
     if (seconds % 5 === 0 && npc1.xpos < 0) npc1 = new npcMold(1550, 350, 100, 100, randomNpcS() - 5, npc1sprite, 100, 100); // keeps one slower so they do not bunch together making the game too easy
     if (seconds % 5 === 0 && npc2.xpos < 0) npc2 = new npcMold(1900, 350, 100, 100, randomNpcS(), npc2sprite, 100, 100);
     if (seconds % 10 === 0 && coin4.xpos < 0) {
@@ -272,13 +280,14 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     spawn();
     // arr for game pieces
-    const componentArr = [pc, npc1, npc2, coin1, coin2, coin3, coin4];
+    const componentArr = [background, pc, npc1, npc2, coin1, coin2, coin3, coin4];
     // new object positions
     componentArr.forEach((e) => e.render());
     // check for collision before move for all pices except pc
     componentArr.forEach((e, i) => {
-        if (i > 0) e.hitResponse();
+        if (i > 1) e.hitResponse();
     });
     // movement for next frame
     componentArr.forEach((e) => e.move());
+    console.log(background.speed)
 }
