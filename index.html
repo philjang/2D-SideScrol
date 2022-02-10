@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- google font -->
         <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
         <!-- animate.style -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -13,32 +14,36 @@
     </head>
 
     <body>
+        <!-- container for title and screen -->
         <div id="layout">
             <!-- Title -->
             <h1>2D-SideScrol</h1>
-            <!-- Gamescreen -->
+            <!-- Gamescreen holding all changing elements -->
             <div id="screen">
-                <!-- status bar -->
-                <div class="top-left">
+                <!-- status bar above canvas -->
+                <!-- stopwatch icon and time display -->
+                <div class="top-left bezel center"> 
                     <img src="img/timerStatus.png" alt="stopwatch icon" style="height: 50%">
                     <div id="timer">00:00</div>
                 </div>
-                <div class="top-mid">
+                <!-- coin icon and coin count display -->
+                <div class="top-mid bezel center">
                     <img src="img/coinStatus.png" alt="coin icon" style="height: 40%">
                     <div id="coins">x 0</div>
                 </div>
-                <div class="top-right">
-                    <!-- <button id="reset-btn">Reset</button> -->
+                <!-- start button, potential health/high score later -->
+                <div class="top-right bezel center">
                     <button id="start-btn">Start</button>
+                    <!-- <button id="pause-btn">Pause</button> -->
                 </div>
-                <!-- holds canvas element -->
-                <main>
+                <!-- holds canvas element; rendering area-->
+                <main class="center">
                     <canvas id="canvas"></canvas>
-                    <div id="instructions" class="animate__animated animate__backInDown">Use your ◀️ ▶️ + 🔼 arrow keys to maneuver and dodge the oncoming enemies!<br> And be sure to collect some coins along the way for a higher score! <br>The enemies will gradually speed up... so be prepared and see how long you can survive! <br><br>Press "space" or click the "Start" button &#8599 to begin!</div>
+                    <!-- classes for animate.css -->
+                    <div id="instructions" class="animate__animated animate__backInDown center">Use your ◀️ ▶️ + 🔼 arrow keys to maneuver and dodge the oncoming enemies!<br> And be sure to collect some coins along the way for a higher score! <br>The enemies will gradually speed up... so be prepared and see how long you can survive! <br><br>Press "space" or click the "Start" button &#8599 to begin!</div>
                 </main>
                 <!-- subtitle bar -->
-                <div id="sub"></div>
-                <img id="pc-right-sprite" class="sprites" src="img/pcRight.png">
+                <div id="sub" class="bezel center"></div>
             </div>
         </div>
     </body>

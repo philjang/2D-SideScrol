@@ -1,18 +1,11 @@
 body {
     background-color: black;
-    font-family: "Bangers", cursive;
+    font-family: 'Bangers', cursive;
     font-size: 1.5rem;
     letter-spacing: 2px;
-}
-h1 {
-    margin-top: 1.5vh;
-    margin-bottom: 1vh;
-    padding: 1vh 3vw;
     color: white;
-    background-color: rgba(0,0,0, .7);
-    border-radius: 10px;
-    border: 7px double white;
 }
+
 /* holds all content */
 #layout {
     display: flex;
@@ -20,76 +13,95 @@ h1 {
     justify-content: flex-start;
     align-items: center;
     margin: 2.5vh auto 0 auto;
-    background-image: url("../img/BG.png");
+    background-image: url('../img/BG.png');
     background-size: cover;
     width: 95vw;
     height: 95vh;
     border-radius: 20px;
 }
+
+/* Title */
+h1 {
+    margin-top: 1.5vh;
+    margin-bottom: 1vh;
+    padding: 1vh 3vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    border: 7px double white;
+}
+
 /* holds active game elements */
 #screen {
     display: grid;
     grid-template-rows: 10vh 60vh 10vh;
     grid-template-columns: 30vw 30vw 30vw;
     grid-template-areas:
-        "top-left top-mid top-right"
-        "gameplay gameplay gameplay" 
-        "subtitle subtitle subtitle";
+        'top-left top-mid top-right'
+        'gameplay gameplay gameplay'
+        'subtitle subtitle subtitle';
     border: 7px double black;
 }
-.top-left, .top-mid, .top-right, #sub, main, #instructions { 
+
+/* flex and center elements inside screen */
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+/* styles above and below canvas */
+.bezel {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* grid-area designation for above canvas */
 .top-left {
     grid-area: top-left;
-    background-color: rgba(0,0,0,.8);
-    color: white;
-
 }
-#timer {
-    /* grid-area: timer; */
-    margin-left: 1vw;
-}
-.top-mid{
+.top-mid {
     grid-area: top-mid;
-    background-color: rgba(0,0,0,.8);
-    color: white;
-}
-#coins {
-    margin-left:1vw;
 }
 .top-right {
     grid-area: top-right;
-    background-color: rgba(0,0,0,.8);
 }
+
+/* separates status bar icons from text for top bezel */
+img {
+    margin-right: 1vw;
+}
+
+#start-btn {
+    padding: 1vh 2vh;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+}
+
 /* active game rendering area */
 main {
     grid-area: gameplay;
-    background-color: gray;
-    background-image: url("../img/backdrop.png");
+    background-image: url('../img/backdrop.png');
     background-size: auto 100%;
 }
-/* potentially use for text info */
-#sub {
-    grid-area: subtitle;
-    background-color: rgba(0,0,0,.8);
-    color: white;
-}
+
 canvas {
-    /* background-color: white; */ /* check to see if canvas is filling main element */
+    /* fills main element */
     height: 100%;
     width: 100%;
 }
+
+/* grid-area for below canvas, potentially use for more text info */
+#sub {
+    grid-area: subtitle;
+}
+
+/* pop-up */
 #instructions {
-    background-color: rgba(0,0,0,.7);
-    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     width: 80vw;
     height: 40vh;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.4em;
     line-height: 1.5;
     padding: 2vh 1vw;
     border-radius: 10px;
@@ -101,11 +113,3 @@ canvas {
         padding: 3em 0;
     }
 } */
-#start-btn {
-    font-family: "Bangers", cursive;
-    padding: 1vh 2vh;
-    letter-spacing: 2px;
-}
-.sprites {
-    display: none;
-}

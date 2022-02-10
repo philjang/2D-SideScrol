@@ -36,7 +36,7 @@ Once the fundamental functionality of the gameplay was achieved, the page was st
 
 ### Unsolved problems
 
-Some of the stretch goals yet to be achieved include adding a decrementing health component, environmental obstacles, and a more dynamic background setting. The game also has some potential for elaboration using additional game pieces (e.g. power-up items and tools). It would also benefit from improved visual design as well as further variance in graphics animations and gamepiece movement.
+Some of the stretch goals yet to be achieved include adding a decrementing health component, environmental obstacles, and a more dynamic background setting. The game also has some potential for elaboration using additional game pieces (e.g. power-up items and tools) or adding a highscore tracker. It would also benefit from improved visual design as well as further variance in graphics animations and gamepiece movement.
 
 ### Resources
 + Animate.css 
