@@ -24,7 +24,7 @@ h1 {
     background-size: cover;
     width: 95vw;
     height: 95vh;
-    /* border-radius: 20px; */
+    border-radius: 20px;
 }
 /* holds active game elements */
 #screen {
@@ -95,6 +95,12 @@ canvas {
     border-radius: 10px;
     border: 7px double white;
 }
+/* @media (max-width:600px) {
+    #instructions {
+        font-size: 1em;
+        padding: 3em 0;
+    }
+} */
 #start-btn {
     font-family: "Bangers", cursive;
     padding: 1vh 2vh;
