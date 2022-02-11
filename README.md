@@ -34,9 +34,71 @@ The general workflow began with laying out objectives for a minimum viable produ
 
 Once the fundamental functionality of the gameplay was achieved, the page was styled to be more aesthetically pleasing using images, fonts, and improved proportions for positioning, before moving onto additional functional components. Code was refactored throughout the development process, but especially after achieving the functionality components of mvp, to minimize line count and increase modularity. Some of the stretch goals were achieved, including adding some variance to npc movement, pc movement being limited by gravity simulation, and a moving background. Thereafter, sprite sheets were used to add more appeal to the action of gameplay, making the playable character and other game objects appear more dynamic. 
 
+***
+Product screenshot
+![Product screenshot](./img/screenshot.png)
+***
+
+## Sample Code Block
+
+```javascript
+// object class for game pieces
+class gamePiece {
+    constructor(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH) {
+        this.xpos = inputX;
+        this.ypos = inputY;
+        this.width = inputW;
+        this.height = inputH;
+        this.speed = inputS;
+        this.image = inputI;
+        this.srcW = inputSW;
+        this.srcH = inputSH;
+    }
+
+    // method to render for each frame
+    render() {
+	// drawImage(newimagevar, srcX, srcY, srcW, srcH, x, y, w, h)
+        ctx.drawImage(this.image, srcXPC, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height);
+    }
+
+    // dictates movement
+    move() {
+        this.xpos -= this.speed;
+    }
+    detectHit() {
+        // axis-aligned bounding box
+        // compare relation of pc and this npc
+        const pcRight = pc.xpos + pc.width >= this.xpos;
+        const pcLeft = pc.xpos <= this.xpos + this.width;
+        const pcTop = pc.ypos <= this.ypos + this.height;
+        const pcBottom = pc.ypos + pc.height >= this.ypos;
+        // if all 4 true, then there is collision
+        if (pcRight && pcLeft && pcTop && pcBottom) {
+            return true;
+        } else return false;
+    }
+}
+
+pc.move = () => {
+	const speed = 10; // set increment value to move per keydown
+	if (keysDown.ArrowLeft) pc.xpos -= speed;
+	if (keysDown.ArrowRight) pc.xpos += speed;
+	// gravity simulation
+	if (pc.ypos === 400 && keysDown.ArrowUp) {
+		pc.jumpTime = 0.01;
+		pc.ypos = 400 + (-100 * pc.jumpTime + 10 * pc.jumpTime ** 2);
+	}
+	if (pc.ypos < 400) {
+		pc.jumpTime += 0.7;
+		pc.ypos = 400 + (-100 * pc.jumpTime + 10 * pc.jumpTime ** 2);
+	}
+	if (pc.ypos > 400) pc.ypos = 400; // prevents overshoot from gravity
+};
+```
+
 ### Unsolved problems
 
-Some of the stretch goals yet to be achieved include adding a decrementing health component, environmental obstacles, and a more dynamic background setting. The game also has some potential for elaboration using additional game pieces (e.g. power-up items and tools) or adding a highscore tracker. It would also benefit from improved visual design as well as further variance in graphics animations and gamepiece movement.
+Some of the stretch goals yet to be achieved include adding a decrementing health component, environmental obstacles, and a more dynamic background setting. The game also has some potential for elaboration using additional game pieces (e.g. power-up items and tools) or adding a high-score tracker. It would also benefit from improved visual design as well as further variance in graphics animations and gamepiece movement. Accessibilty and viability for different sizes of screens and forms of input have yet to be addressed. 
 
 ### Resources
 + Animate.css 

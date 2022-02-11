@@ -238,3 +238,53 @@
 // function randomColor() {
 //     return "#" + Math.floor(Math.random() * 16777215).toString(16);
 // }
+
+// sprite archetype
+// let srcXcoin="";
+// let srcYcoin="";
+// const sheetWidth = 80;
+// const sheetHeight = 16;
+// let coincCols = 5;
+// const frameCount = 0;
+// const width = sheetWidth/cols;
+// function updateFrame (){
+    // currentFrame = ++currentFrame % coinCols;
+    // srcXcoin = currentFrame*16
+    // srcY = 0
+    // ctx.clearRect(0,0,500,500)
+// }
+// function drawImage(){
+//     updateFrame()
+//     ctx.drawImage(coinSprite, srcXcoin, 0, 16, 16, 40, 40, 20, 20)
+// }
+// setInterval(drawImage,50)
+
+// let srcXcoin="";
+// let srcXPC="";
+// let coincCols = 5;
+// let PCCols = 8;
+
+// let background = new gamePiece(0,0,1510,550,5,bgImage,1510,550)
+// background
+// const vx=100
+// const numImages = 2
+// const xpos = totalSeconds*vx % 1510
+// ctx.save()
+// ctx.translate(-xpos, 0)
+// for (let i=0;i<2;i++) {
+//     ctx.drawImage(bgImage, i*1510,0)
+// }
+
+// attempt to refactor
+// const spriteArray = [coinSprite, pcRightSprite, npc1sprite, npc2sprite, bgImage]
+// const spriteImages = ["img/coin.png", "img/pcRight.png", "img/npc1.png", "img/npc2.png", "img/backdropGameplay.png"]
+// for (let index = 0; index < spriteArray.length; index++) {
+//     spriteArray[i] = new Image()
+//     spriteArray.src = spriteImages[i]
+// }
+
+// attempt to refactor
+// for(let i =0; i<coinArr.length; i++) {
+//     const coinArr = [coin1, coin2, coin3, coin4]
+//     coinArr[i] = new coinMold(1500+i*100, randomY(), 20, 20, 'yellow', 5+seconds/15)
+//     }

@@ -1,15 +1,15 @@
 /* DOM SELECTORS and EVENT LISTENERS */
-const canvas = document.getElementById("canvas");
-const timerDiv = document.getElementById("timer");
-const coinDiv = document.getElementById("coins");
-const subDiv = document.getElementById("sub");
-const startBtn = document.getElementById("start-btn");
-const instructions = document.getElementById("instructions");
+const canvas = document.getElementById('canvas');
+const timerDiv = document.getElementById('timer');
+const coinDiv = document.getElementById('coins');
+const subDiv = document.getElementById('sub');
+const startBtn = document.getElementById('start-btn');
+const instructions = document.getElementById('instructions');
 // object to store key status
 const keysDown = {};
 // key event listeners for pc movement
-document.addEventListener("keydown", (e) => (keysDown[e.key] = true));
-document.addEventListener("keyup", (e) => (keysDown[e.key] = false));
+document.addEventListener('keydown', (e) => (keysDown[e.key] = true));
+document.addEventListener('keyup', (e) => (keysDown[e.key] = false));
 // KeyboardEvent.key = domstring of key
 
 // // experimenting with mobile interface
@@ -19,62 +19,33 @@ document.addEventListener("keyup", (e) => (keysDown[e.key] = false));
 // || touch.randomword) // in pc.mov()
 
 /* CANVAS RENDERING */
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext('2d');
 
 // sets canvas to be the size the element takes up (improve resolution)
-canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
-canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
+canvas.setAttribute('width', getComputedStyle(canvas)['width']);
+canvas.setAttribute('height', getComputedStyle(canvas)['height']);
 
 /* GAME FUNCTIONS */
-// resolution at x: 1510 ,y: 550
+// resolution at x: 1510, y: 550 w/13" macbook screen
 
 // gameloop variables
-// time since start
+// variable for time since start
 let seconds = -1;
-
-// sprite archetype
-// let srcXcoin="";
-// let srcYcoin="";
-// const sheetWidth = 80;
-// const sheetHeight = 16;
-// let coincCols = 5;
-// const frameCount = 0;
-// const width = sheetWidth/cols;
-// function updateFrame (){
-    // currentFrame = ++currentFrame % coinCols;
-    // srcXcoin = currentFrame*16
-    // srcY = 0
-    // ctx.clearRect(0,0,500,500)
-// }
-// function drawImage(){
-//     updateFrame()
-//     ctx.drawImage(coinSprite, srcXcoin, 0, 16, 16, 40, 40, 20, 20)
-// }
-// setInterval(drawImage,50)
-
 
 // sprite variables
 let currentFrameC = 0;
 let currentFramePC = 0;
 
 const coinSprite = new Image();
-coinSprite.src = "img/coin.png";
 const pcRightSprite = new Image();
-pcRightSprite.src = "img/pcRight.png";
 const npc1sprite = new Image();
-npc1sprite.src = "img/npc1.png";
 const npc2sprite = new Image();
-npc2sprite.src = "img/npc2.png";
 const bgImage = new Image();
-bgImage.src = "img/backdropGameplay.png";
-
-
-let srcXcoin="";
-let srcXPC="";
-// let coincCols = 5;
-// let PCCols = 8;
-
-
+coinSprite.src = 'img/coin.png';
+pcRightSprite.src = 'img/pcRight.png';
+npc1sprite.src = 'img/npc1.png';
+npc2sprite.src = 'img/npc2.png';
+bgImage.src = 'img/backdropGameplay.png';
 
 // timer function
 const changeSeconds = () => {
@@ -82,36 +53,39 @@ const changeSeconds = () => {
     // convert num to string for padStart
     const minuteString = Math.floor(seconds / 60).toString();
     const secondString = (seconds % 60).toString();
-    let masterTime = `${minuteString.padStart(2, "0")}:${secondString.padStart(2, "0")}`;
+    let masterTime = `${minuteString.padStart(2, '0')}:${secondString.padStart(2, '0')}`;
     // display timer in div
     timerDiv.innerText = masterTime;
 };
 
-// start function
+// game start function
 // space key listener for start btn
-// window.addEventListener('load', ()=>{
-//     console.log("i'm ready")
-    document.addEventListener("keyup", (e) => {
-        if (e.key === " " && seconds === -1) initialize();
+window.addEventListener('load', () => {
+    document.addEventListener('keyup', (e) => {
+        if (e.key === ' ' && seconds === -1) initialize();
     });
-    startBtn.addEventListener("click", initialize);
-// });
+    startBtn.addEventListener('click', initialize);
+});
 
 function initialize() {
-    instructions.style.display = "none"; // removes intro banner
-    seconds = 0 // reset timer
+    instructions.style.display = 'none'; // removes intro banner
+    startBtn.style.display = 'none'; // remove start btn from view
+    timerDiv.innerText = '00:00'; // reset time display
+    coinDiv.innerText = 'x 0'; // reset coin display
+    subDiv.innerText = ''; // clear game over message
+    seconds = 0; // reset timer
     coinMold.coinsCollected = 0; // reset coin counter
-    timerDiv.innerText = "00:00"; // reset time display
-    coinDiv.innerText = "x 0"; // reset coin display
-    subDiv.innerText = ""; // clear game over message  
-    background = new backgroundClass(0,0,3020,550,5,bgImage,3020,550) 
+    // loads first background and pc
+    background = new backgroundClass(0, 0, 3020, 550, 5, bgImage, 3020, 550);
     pc = new gamePiece(100, 400, 50, 50, 10, pcRightSprite, 100, 100);
-    pc.jumpTime = 0; // add property of jumpTime for gravity calculations
+    pc.jumpTime = ""; // add property of jumpTime for gravity calculations
     // player movement function as key-value pair
+    // defined to differ from other gamepieces
     pc.move = () => {
         const speed = 10; // set increment value to move per keydown
         if (keysDown.ArrowLeft) pc.xpos -= speed;
         if (keysDown.ArrowRight) pc.xpos += speed;
+        // gravity simulation
         if (pc.ypos === 400 && keysDown.ArrowUp) {
             pc.jumpTime = 0.01;
             pc.ypos = 400 + (-100 * pc.jumpTime + 10 * pc.jumpTime ** 2);
@@ -132,7 +106,6 @@ function initialize() {
     // begin intervals for stopwatch and gameloop
     gameInterval = setInterval(gameLoop, 50);
     timer = setInterval(changeSeconds, 1000);
-    startBtn.style.display = "none"; // remove start btn from view
 }
 // object class for game pieces
 class gamePiece {
@@ -145,12 +118,12 @@ class gamePiece {
         this.image = inputI;
         this.srcW = inputSW;
         this.srcH = inputSH;
-    } 
+    }
 
     // method to render for each frame
     render() {
-    // drawImage(newimagevar, srcX, srcY, srcW, srcH, x, y, w, h)
-        ctx.drawImage(this.image, srcXPC, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height)
+        // drawImage(newimagevar, srcX, srcY, srcW, srcH, x, y, w, h)
+        ctx.drawImage(this.image, srcXPC, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height);
     }
 
     // dictates movement
@@ -158,6 +131,7 @@ class gamePiece {
         this.xpos -= this.speed;
     }
     detectHit() {
+        // axis-aligned bounding box
         // compare relation of pc and this npc
         const pcRight = pc.xpos + pc.width >= this.xpos;
         const pcLeft = pc.xpos <= this.xpos + this.width;
@@ -169,22 +143,14 @@ class gamePiece {
         } else return false;
     }
 }
-// let background = new gamePiece(0,0,1510,550,5,bgImage,1510,550)
-// background
-// const vx=100
-// const numImages = 2
-// const xpos = totalSeconds*vx % 1510
-// ctx.save()
-// ctx.translate(-xpos, 0)
-// for (let i=0;i<2;i++) {
-//     ctx.drawImage(bgImage, i*1510,0)
-// }
+
+// class for background to render movement
 class backgroundClass extends gamePiece {
     constructor(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH) {
         super(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH);
     }
     render() {
-        ctx.drawImage(this.image, 0, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height)
+        ctx.drawImage(this.image, 0, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height);
     }
 }
 
@@ -208,24 +174,21 @@ class coinMold extends gamePiece {
     constructor(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH) {
         super(inputX, inputY, inputW, inputH, inputS, inputI, inputSW, inputSH);
     }
-
     render() {
-        ctx.drawImage(this.image, srcXcoin, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height)
+        ctx.drawImage(this.image, srcXcoin, 0, this.srcW, this.srcH, this.xpos, this.ypos, this.width, this.height);
     }
-
     hitResponse() {
         if (super.detectHit()) {
             coinMold.coinsCollected++;
-            console.log("hit detected with " + this);
+            console.log('hit detected with ' + this);
             this.ypos = -100; // send coin off screen
-            // console.log(coinMold.coinsCollected) // check total coin count
             // display coin count in div
             coinDiv.innerText = `x ${coinMold.coinsCollected}`;
         }
     }
 }
 
-// return random speed between 9 and 25
+// return random speed between 9 and 25 for npc
 function randomNpcS() {
     return Math.floor(Math.random() * 17 + 9) + seconds / 5; // progressively increases average speed
 }
@@ -237,44 +200,48 @@ function randomY() {
 
 // function to place new pieces on canvas
 function spawn() {
-    if (background.xpos<-1510) background = new backgroundClass(0,0,3020,550,5,bgImage,3020,550) 
-    if (seconds % 5 === 0 && npc1.xpos < 0) npc1 = new npcMold(1550, 350, 100, 100, randomNpcS() - 5, npc1sprite, 100, 100); // keeps one slower so they do not bunch together making the game too easy
-    if (seconds % 5 === 0 && npc2.xpos < 0) npc2 = new npcMold(1900, 350, 100, 100, randomNpcS(), npc2sprite, 100, 100);
+    if (background.xpos < -1510) {
+        background = new backgroundClass(0, 0, 3020, 550, 5, bgImage, 3020, 550);
+    }
+    if (seconds % 5 === 0 && npc1.xpos < 0) {
+        // -5 for inputS keeps one slower so they do not bunch together making the game too easy
+        npc1 = new npcMold(1550, 350, 100, 100, randomNpcS() - 5, npc1sprite, 100, 100);
+    }
+    if (seconds % 5 === 0 && npc2.xpos < 0) {
+        npc2 = new npcMold(1900, 350, 100, 100, randomNpcS(), npc2sprite, 100, 100);
+    }
     if (seconds % 10 === 0 && coin4.xpos < 0) {
         // coins continually speed up as npc's do
         coin1 = new coinMold(1500, randomY(), 20, 20, 5 + seconds / 15, coinSprite, 16, 16);
         coin2 = new coinMold(1600, randomY(), 20, 20, 5 + seconds / 15, coinSprite, 16, 16);
         coin3 = new coinMold(1700, randomY(), 20, 20, 5 + seconds / 15, coinSprite, 16, 16);
         coin4 = new coinMold(1800, randomY(), 20, 20, 5 + seconds / 15, coinSprite, 16, 16);
-        // for(let i =0; i<coinArr.length; i++) {
-        //     const coinArr = [coin1, coin2, coin3, coin4]
-        //     coinArr[i] = new coinMold(1500+i*100, randomY(), 20, 20, 'yellow', 5+seconds/15)
-        //     }
     }
 }
 
 // end game
 function endGame() {
     // display results
-    instructions.style.display = "flex"; // bring back banner for score display
+    instructions.style.display = 'flex'; // bring back banner for score display
     instructions.innerText = `You scored ${Math.floor(seconds * 0.8 + coinMold.coinsCollected * 2.5)} points!\n\n Tap "space" or click "Start" to beat your last score!`;
     subDiv.innerText = `GAME OVER...`;
     // clear gameloop and timer intervals
     clearInterval(gameInterval);
     clearInterval(timer);
     // bring back start button
-    startBtn.style.display = "inline-block";
+    startBtn.style.display = 'inline-block';
     ctx.clearRect(0, 0, canvas.width, canvas.height); // removes glitchy restart
     seconds = -1;
 }
 
+// gamelooop function to run through each frame
 // declaration allows global scope
 function gameLoop() {
-
-    currentFrameC = ++currentFrameC%5;
-    srcXcoin = currentFrameC*16
-    currentFramePC = ++currentFramePC%8;
-    srcXPC = currentFramePC*100
+    //sprite frames
+    currentFrameC = ++currentFrameC % 5;
+    srcXcoin = currentFrameC * 16;
+    currentFramePC = ++currentFramePC % 8;
+    srcXPC = currentFramePC * 100;
 
     // start gameloop with clear screen
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -283,11 +250,10 @@ function gameLoop() {
     const componentArr = [background, pc, npc1, npc2, coin1, coin2, coin3, coin4];
     // new object positions
     componentArr.forEach((e) => e.render());
-    // check for collision before move for all pices except pc
+    // check for collision before move for coins and npc's
     componentArr.forEach((e, i) => {
         if (i > 1) e.hitResponse();
     });
     // movement for next frame
     componentArr.forEach((e) => e.move());
-    console.log(background.speed)
 }
