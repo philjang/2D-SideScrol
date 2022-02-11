@@ -39,6 +39,8 @@ Product screenshot
 ![Product screenshot](./img/screenshot.png)
 ***
 
+[link to game](https://philjang.github.io/2D-SideScrol/)
+
 ## Sample Code Block
 
 ```javascript
