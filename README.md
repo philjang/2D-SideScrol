@@ -37,9 +37,9 @@ Once the fundamental functionality of the gameplay was achieved, the page was st
 ***
 Product screenshot
 ![Product screenshot](./img/screenshot.png)
+[link to game](https://philjang.github.io/2D-SideScrol/)
 ***
 
-[link to game](https://philjang.github.io/2D-SideScrol/)
 
 ## Sample Code Block
 
