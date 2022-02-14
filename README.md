@@ -37,7 +37,6 @@ Once the fundamental functionality of the gameplay was achieved, the page was st
 ***
 Product screenshot
 ![Product screenshot](./img/screenshot.png)
-[link to game](https://philjang.github.io/2D-SideScrol/)
 ***
 
 
@@ -97,6 +96,9 @@ pc.move = () => {
 	if (pc.ypos > 400) pc.ypos = 400; // prevents overshoot from gravity
 };
 ```
+### Link to Current Version
+
+[2D-SideScrol on Github Pages](https://philjang.github.io/2D-SideScrol/)
 
 ### Unsolved problems
 
